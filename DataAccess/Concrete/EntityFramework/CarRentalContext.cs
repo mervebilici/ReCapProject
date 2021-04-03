@@ -10,10 +10,10 @@ namespace DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"server=(localdb)\MSSQLLocalDB; DataBase=CarRental; Trusted_Connection=true");
+            optionsBuilder.UseSqlServer(@"server=(localdb)\MSSQLLocalDB; Database=CarRental; Trusted_Connection=true");
         }
-        DbSet<Car> CARS { get; set; }
-        DbSet<Brand> Brands { get; set; }
-        DbSet<Color> Colors { get; set; }
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Color> Colors { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Business.Concrete;
+using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -11,16 +13,68 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             //GetCarsByBrandId();
-            GetCarsByColorId();
-           // CarAdd();
-
-            //CarManager carManager = new CarManager(new EfCarDal());
-            //foreach (var cars in carManager.GetAll())
-            //{
-            //    Console.WriteLine(cars.Description);
-            //}
+            //GetCarsByColorId();
+            //CarAdd();
+            //DescriptionTest();
+            //BrandTest();
+            //CarTest();
+            //ColorTest();
+            
         }
-          static void GetCars()
+
+        private static void ColorTest()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            Color color = new Color
+            {
+                ColorName = "SARI"
+            };
+            colorManager.Add(color);
+            foreach (var colors in colorManager.GetAll())
+            {
+                Console.WriteLine(colors.ColorName);
+            }
+            colorManager.Update(color);
+            Console.WriteLine("RENK GNCELLENDİ");
+        }
+
+        private static void CarTest()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+            Car car1 = new Car
+            {
+                Id = 5
+            };
+            carManager.Add(new Car { BrandId = 5, ColorId = 5, ModelYear = "2021", DailyPrice = 500, Description = "OPEL CORSA" });
+            foreach (var cars in carManager.GetCarDetails())
+            {
+                Console.WriteLine("{0} / {1} / {2} / {3}", cars.CarName, cars.BrandName, cars.ColorName, cars.ColorId);
+            }
+            foreach (var cars in carManager.GetAll())
+            {
+                Console.WriteLine(cars.Description);
+            }
+            carManager.Delete(car1);
+        }
+
+        private static void BrandTest()
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            foreach (var brand in brandManager.GetBrandDetails())
+            {
+                Console.WriteLine(brand.BrandId + "/" + brand.BrandName);
+            }
+        }
+
+        private static void DescriptionTest()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+            foreach (var cars in carManager.GetAll())
+            {
+                Console.WriteLine(cars.Description);
+            }
+        }
+        static void GetCars()
         {
             CarManager carManager = new CarManager(new InMemoryCarDal());
             Console.WriteLine("ARAÇ KİRALAMA SİSTEMİNE HOŞGELDİNİZ!");
