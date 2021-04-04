@@ -12,106 +12,144 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            //GetCarsByBrandId();
-            //GetCarsByColorId();
             //CarAdd();
-            //DescriptionTest();
-            //BrandTest();
-            CarTest();
-            //ColorTest();
-            //GetCars();
-            
+            GetCars();
+            //CarDetailsTest();
+
+            //CustomersTest();
+            //UsersTest();
+            //RentalsTest();
         }
 
-        private static void ColorTest()
+        private static void RentalsTest()
         {
-            ColorManager colorManager = new ColorManager(new EfColorDal());
-            Color color = new Color
+            RentalsManager rentalsManager = new RentalsManager(new EfRentalsDal());
+
+            Console.WriteLine(rentalsManager.Add(new Rentals()
             {
-                ColorName = "SARI"
-            };
-            colorManager.Add(color);
-            foreach (var colors in colorManager.GetAll())
-            {
-                Console.WriteLine(colors.ColorName);
-            }
-            colorManager.Update(color);
-            Console.WriteLine("RENK GNCELLENDİ");
+                CarId = 1,
+                CustomerId = 1,
+                RentDate = new DateTime(2021, 03, 30)
+            }).Message);
         }
 
-        private static void CarTest()
+        private static void UsersTest()
+        {
+            UsersManager usersManager = new UsersManager(new EfUsersDal());
+            usersManager.Add(new Users()
+            {
+                FirstName = "Selin",
+                LastName = "Berber",
+                Email = "selinberber@gmail.com",
+                Id = 2
+            });
+            usersManager.Add(new Users()
+            {
+                FirstName = "Ecem Sena",
+                LastName = "Çelik",
+                Email = "ecemçelik@gmail.com",
+                Id = 3
+            });
+            usersManager.Add(new Users()
+            {
+                FirstName = "Muhammeed Eymen",
+                LastName = "Bayram",
+                Email = "eymenbayram@gmail.com",
+                Id = 4
+            });
+            Console.WriteLine("*********************KULLANICILAR LİSTESİ******************");
+            foreach (var user in usersManager.GetAll().Data)
+            {
+                Console.WriteLine("{0} : {1} : {2} : {3} : {4}", user.Id, user.FirstName, user.LastName, user.Email, user.Password);
+            }
+            usersManager.Delete(new Users()
+            {
+                Id = 3
+            });
+            Console.WriteLine("*********************KULLANICILAR LİSTESİ******************");
+            foreach (var user in usersManager.GetAll().Data)
+            {
+                Console.WriteLine("{0} : {1} : {2} : {3} : {4}", user.Id, user.FirstName, user.LastName, user.Email, user.Password);
+            }
+            usersManager.Update(new Users()
+            {
+                Id = 2,
+                FirstName = "Edanur",
+                LastName = "Bayram",
+                Email = "edanurbayram@gmail.com",
+            });
+            Console.WriteLine("*********************KULLANICILAR LİSTESİ******************");
+            foreach (var user in usersManager.GetAll().Data)
+            {
+                Console.WriteLine("{0} : {1} : {2} : {3} : {4}", user.Id, user.FirstName, user.LastName, user.Email, user.Password);
+            }
+        }
+
+        private static void CustomersTest()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomersDal());
+            Console.WriteLine(customerManager.Add(new Customers
+            {
+                UserId = 1,
+                CompanyName = "A AJANS"
+
+            }));
+            customerManager.Add(new Customers
+            {
+                UserId = 2,
+                CompanyName = "B AJANS"
+            });
+            customerManager.Add(new Customers
+            {
+                UserId = 3,
+                CompanyName = "C AJANS"
+            });
+            Console.WriteLine("*********************MÜŞTERİ LİSTESİ********************");
+            foreach (var customer in customerManager.GetAll().Data)
+            {
+                Console.WriteLine("{0} : {1} ", customer.UserId, customer.CompanyName);
+            }
+
+            customerManager.Delete(new Customers()
+            {
+                UserId = 3
+            });
+
+            Console.WriteLine("------------------MÜŞTERİ LİSTESİ-------------------------");
+
+            foreach (var customer in customerManager.GetAll().Data)
+            {
+                Console.WriteLine("{0} : {1} ", customer.UserId, customer.CompanyName);
+            }
+        }
+
+        private static void CarDetailsTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            Car car1 = new Car
+            var result = carManager.GetCarDetails();
+            foreach (var car in result.Data)
             {
-                Id = 5
-            };
-            carManager.Add(new Car { BrandId = 5, ColorId = 5, ModelYear = "2021", DailyPrice = 500, Description = "OPEL CORSA" });
-            foreach (var cars in carManager.GetCarDetails())
-            {
-                Console.WriteLine("{0} / {1} / {2} / {3}", cars.CarName, cars.BrandName, cars.ColorName, cars.ColorId);
-            }
-            foreach (var cars in carManager.GetAll())
-            {
-                Console.WriteLine(cars.Description);
-            }
-            carManager.Delete(car1);
-        }
-
-        private static void BrandTest()
-        {
-            BrandManager brandManager = new BrandManager(new EfBrandDal());
-            foreach (var brand in brandManager.GetBrandDetails())
-            {
-                Console.WriteLine(brand.BrandId + "/" + brand.BrandName);
+                Console.WriteLine(car.Description + "/ " + car.ColorName + "/ " + car.ColorId + "/ "
+                    + car.BrandName + "/ " + car.BrandId + "/ " + car.DailyPrice);
             }
         }
 
-        private static void DescriptionTest()
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var cars in carManager.GetAll())
-            {
-                Console.WriteLine(cars.Description);
-            }
-        }
-        static void GetCars()
+        private static void GetCars()
         {
             CarManager carManager = new CarManager(new EfCarDal());
             Console.WriteLine("ARAÇ KİRALAMA SİSTEMİNE HOŞGELDİNİZ!");
             Console.WriteLine("*******MEVCUT ARAÇLAR*******");
-            foreach (var cars in carManager.GetAll())
-           {
+            foreach (var cars in carManager.GetAll().Data)
+            {
                 Console.WriteLine("ARABA MODELİ: " + cars.Description);
                 Console.WriteLine("GÜNLÜK FİYATI:" + cars.DailyPrice);
                 Console.WriteLine("MODEL YILI:" + cars.ModelYear);
                 Console.WriteLine("***************************");
-           }
-       }
-       static void GetCarsByBrandId()
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
-           Console.WriteLine("MARKA SEÇİN: 1:TOYOTA 2:FIAT 3:BMW 4:MERCEDES");
-            int markaSecim = Convert.ToInt32(Console.ReadLine());
-            foreach (var cars in carManager.GetCarsByBrandId(markaSecim))
-            {
-               Console.WriteLine(cars.Description);
-            }
-       }
-
-
-        static void GetCarsByColorId()
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
-            Console.WriteLine("RENK SEÇİN: 1:BEYAZ 2:SİYAH 3:KIRMIZI 4:MAVİ");
-            int renkSecim = Convert.ToInt32(Console.ReadLine());
-            foreach (var cars in carManager.GetCarsByColorId(renkSecim))
-            {
-                Console.WriteLine(cars.Description);
             }
         }
 
-        static void CarAdd()
+
+        private static void CarAdd()
         {
             Car car = new Car();
             CarManager carManager = new CarManager(new EfCarDal());
@@ -119,21 +157,21 @@ namespace ConsoleUI
             car.Id = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN BRAND ID NUMARASINI GİRİNİZ:");
-           car.BrandId = Convert.ToInt32(Console.ReadLine());
+            car.BrandId = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN COLOR ID NUMARASINI GİRİNİZ:");
-          car.ColorId = Convert.ToInt32(Console.ReadLine());
+            car.ColorId = Convert.ToInt32(Console.ReadLine());
 
-           Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN GÜLÜK KİRALAMA ÜCRETİNİ GİRİNİZ:");
-           car.DailyPrice = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN GÜLÜK KİRALAMA ÜCRETİNİ GİRİNİZ:");
+            car.DailyPrice = Convert.ToInt32(Console.ReadLine());
 
-           Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN MODEL YILINI GİRİNİZ:");
-           car.ModelYear = Convert.ToString(Console.ReadLine());
+            Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN MODEL YILINI GİRİNİZ:");
+            car.ModelYear = Convert.ToString(Console.ReadLine());
 
-           Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN MARKA VE MODELİNİ GİRİNİZ:");
-           car.Description = Convert.ToString(Console.ReadLine());
+            Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN MARKA VE MODELİNİ GİRİNİZ:");
+            car.Description = Convert.ToString(Console.ReadLine());
 
-           carManager.Add(car);
+            carManager.Add(car);
         }
     }
 }

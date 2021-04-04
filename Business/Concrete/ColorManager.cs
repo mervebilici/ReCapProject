@@ -23,18 +23,23 @@ namespace Business.Concrete
         public IResult Add(Entities.Concrete.Color color)
         {
             _colorDal.Add(color);
-            return new SuccessResult(Messages.ColorAdded);
+            return new SuccessResult(Messages.Added);
         }
 
         public IResult Delete(Entities.Concrete.Color color)
         {
             _colorDal.Delete(color);
-            return new SuccessResult(Messages.ColorDeleted);
+            return new SuccessResult(Messages.Deleted);
         }
 
         public IDataResult<List<Entities.Concrete.Color>> GetAll()
         {
-            return new SuccessDataResult<List<Entities.Concrete.Color>>(_colorDal.GetAll(), Messages.ColorsListed);
+            return new SuccessDataResult<List<Entities.Concrete.Color>>(_colorDal.GetAll(), Messages.CarListed);
+        }
+
+        public IDataResult<List<Entities.Concrete.Color>> GetAllById(int colorId)
+        {
+            throw new NotImplementedException();
         }
 
         public IDataResult<List<ColorDetailDto>> GetColorDetails()
@@ -45,7 +50,7 @@ namespace Business.Concrete
         public IResult Update(Entities.Concrete.Color color)
         {
             _colorDal.Update(color);
-            return new SuccessResult(Messages.ColorUpdated);
+            return new SuccessResult(Messages.Updated);
         }
     }
 }

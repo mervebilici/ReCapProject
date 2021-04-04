@@ -18,17 +18,10 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-
-        public IResult Add(Brand brand)
-        {
-            _brandDal.Add(brand);
-            return new SuccessResult(Messages.BrandAdded);
-        }
-
         public IResult Delete(Brand brand)
         {
             _brandDal.Delete(brand);
-            return new SuccessResult(Messages.BrandDeleted);
+            return new SuccessResult(Messages.Deleted);
         }
 
         public IDataResult<List<Brand>> GetAll()
@@ -36,15 +29,33 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
         }
 
-        public IDataResult<List<BrandDetailDto>> GetBrandDetails()
+        public IDataResult<List<Brand>> GetAllById(int brandId)
         {
-            return new SuccessDataResult<List<BrandDetailDto>>(_brandDal.GetBrandDetails());
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(p => p.BrandId == brandId));
+        }
+
+        public IResult Add(Brand brand)
+        {
+            if (brand.BrandName.Length < 2)
+            {
+                return new ErrorResult(Messages.Invalid);
+            }
+            else
+            {
+                _brandDal.Add(brand);
+            }
+            return new SuccessResult(Messages.Added);
         }
 
         public IResult Update(Brand brand)
         {
             _brandDal.Update(brand);
-            return new SuccessResult(Messages.BrandUpdated);
+            return new SuccessResult(Messages.Updated);
+        }
+
+        public IDataResult<List<BrandDetailDto>> GetBrandDetails()
+        {
+            return new SuccessDataResult<List<BrandDetailDto>>(_brandDal.GetBrandDetails());
         }
     }
 }
