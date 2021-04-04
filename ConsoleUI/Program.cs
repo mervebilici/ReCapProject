@@ -17,8 +17,9 @@ namespace ConsoleUI
             //CarAdd();
             //DescriptionTest();
             //BrandTest();
-            //CarTest();
+            CarTest();
             //ColorTest();
+            //GetCars();
             
         }
 
@@ -76,7 +77,7 @@ namespace ConsoleUI
         }
         static void GetCars()
         {
-            CarManager carManager = new CarManager(new InMemoryCarDal());
+            CarManager carManager = new CarManager(new EfCarDal());
             Console.WriteLine("ARAÇ KİRALAMA SİSTEMİNE HOŞGELDİNİZ!");
             Console.WriteLine("*******MEVCUT ARAÇLAR*******");
             foreach (var cars in carManager.GetAll())
