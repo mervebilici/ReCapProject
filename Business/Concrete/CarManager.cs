@@ -54,7 +54,17 @@ namespace Business.Concrete
 
         public DataResult<List<Car>> GetByDailyPrice()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
+        }
+
+        public DataResult<List<Car>> GetByMonthlyPrice()
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
+        }
+
+        public DataResult<List<Car>> GetByYearlyPrice()
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()

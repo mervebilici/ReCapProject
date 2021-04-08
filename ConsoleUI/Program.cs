@@ -12,8 +12,8 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            //CarAdd();
-            GetCars();
+            CarAdd();
+            //GetCars();
             //CarDetailsTest();
 
             //CustomersTest();
@@ -23,83 +23,97 @@ namespace ConsoleUI
 
         private static void RentalsTest()
         {
-            RentalsManager rentalsManager = new RentalsManager(new EfRentalsDal());
+            RentalManager rentalsManager = new RentalManager(new EfRentalsDal());
 
-            Console.WriteLine(rentalsManager.Add(new Rentals()
+            rentalsManager.Add(new Rental()
             {
                 CarId = 1,
                 CustomerId = 1,
-                RentDate = new DateTime(2021, 03, 30)
-            }).Message);
+                RentDate = new DateTime(2021, 3, 3)
+            });
+            foreach (var rental in rentalsManager.GetAll().Data)
+            {
+                Console.WriteLine("{0} : {1} : {2} : {3}", rental.Id ,rental.CarId, rental.CustomerId, rental.RentDate);
+            }
         }
 
         private static void UsersTest()
         {
-            UsersManager usersManager = new UsersManager(new EfUsersDal());
-            usersManager.Add(new Users()
+            UserManager usersManager = new UserManager(new EfUsersDal());
+            usersManager.Add(new User()
             {
                 FirstName = "Selin",
                 LastName = "Berber",
-                Email = "selinberber@gmail.com",
-                Id = 2
+                Emaiil = "selinberber@gmail.com",
+
+                Password = "12345"
             });
-            usersManager.Add(new Users()
+
+            usersManager.Add(new User()
             {
                 FirstName = "Ecem Sena",
                 LastName = "Çelik",
-                Email = "ecemçelik@gmail.com",
-                Id = 3
+                Emaiil = "ecemçelik@gmail.com",
+
+                Password = "1234"
             });
-            usersManager.Add(new Users()
+
+            usersManager.Add(new User()
             {
                 FirstName = "Muhammeed Eymen",
                 LastName = "Bayram",
-                Email = "eymenbayram@gmail.com",
-                Id = 4
+                Emaiil = "eymenbayram@gmail.com",
+
+                Password = "123"
             });
+
             Console.WriteLine("*********************KULLANICILAR LİSTESİ******************");
             foreach (var user in usersManager.GetAll().Data)
             {
-                Console.WriteLine("{0} : {1} : {2} : {3} : {4}", user.Id, user.FirstName, user.LastName, user.Email, user.Password);
+                Console.WriteLine("{0} : {1} : {2} : {3} : {4}", user.Id, user.FirstName, user.LastName, user.Emaiil, user.Password);
             }
-            usersManager.Delete(new Users()
+            Console.WriteLine(usersManager.Delete(new User
             {
-                Id = 3
-            });
+                Id = 1
+            }).Message );
+
             Console.WriteLine("*********************KULLANICILAR LİSTESİ******************");
             foreach (var user in usersManager.GetAll().Data)
             {
-                Console.WriteLine("{0} : {1} : {2} : {3} : {4}", user.Id, user.FirstName, user.LastName, user.Email, user.Password);
+                Console.WriteLine("{0} : {1} : {2} : {3} : {4}", user.Id, user.FirstName, user.LastName, user.Emaiil, user.Password);
             }
-            usersManager.Update(new Users()
+
+            usersManager.Update(new User()
             {
-                Id = 2,
+                Id = 3,
                 FirstName = "Edanur",
                 LastName = "Bayram",
-                Email = "edanurbayram@gmail.com",
+                Emaiil = "edanurbayram@gmail.com",
+                Password = "123456"
             });
             Console.WriteLine("*********************KULLANICILAR LİSTESİ******************");
+
             foreach (var user in usersManager.GetAll().Data)
             {
-                Console.WriteLine("{0} : {1} : {2} : {3} : {4}", user.Id, user.FirstName, user.LastName, user.Email, user.Password);
+                Console.WriteLine("{0} : {1} : {2} : {3} : {4}", user.Id, user.FirstName, user.LastName, user.Emaiil, user.Password);
             }
         }
 
         private static void CustomersTest()
         {
             CustomerManager customerManager = new CustomerManager(new EfCustomersDal());
-            Console.WriteLine(customerManager.Add(new Customers
+            Console.WriteLine(customerManager.Add(new Customer
             {
                 UserId = 1,
                 CompanyName = "A AJANS"
 
             }));
-            customerManager.Add(new Customers
+            customerManager.Add(new Customer
             {
                 UserId = 2,
                 CompanyName = "B AJANS"
             });
-            customerManager.Add(new Customers
+            customerManager.Add(new Customer
             {
                 UserId = 3,
                 CompanyName = "C AJANS"
@@ -107,19 +121,17 @@ namespace ConsoleUI
             Console.WriteLine("*********************MÜŞTERİ LİSTESİ********************");
             foreach (var customer in customerManager.GetAll().Data)
             {
-                Console.WriteLine("{0} : {1} ", customer.UserId, customer.CompanyName);
+                Console.WriteLine("{0} : {1} : {3} ", customer.Id, customer.UserId, customer.CompanyName);
             }
 
-            customerManager.Delete(new Customers()
+            customerManager.Delete(new Customer
             {
-                UserId = 3
+                Id = 1
             });
-
-            Console.WriteLine("------------------MÜŞTERİ LİSTESİ-------------------------");
-
+            Console.WriteLine("*********************MÜŞTERİ LİSTESİ********************");
             foreach (var customer in customerManager.GetAll().Data)
             {
-                Console.WriteLine("{0} : {1} ", customer.UserId, customer.CompanyName);
+                Console.WriteLine("{0} : {1} : {3} ", customer.Id, customer.UserId, customer.CompanyName);
             }
         }
 
@@ -163,6 +175,12 @@ namespace ConsoleUI
             car.ColorId = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN GÜLÜK KİRALAMA ÜCRETİNİ GİRİNİZ:");
+            car.DailyPrice = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN AYLIK KİRALAMA ÜCRETİNİ GİRİNİZ:");
+            car.DailyPrice = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN YILLIK KİRALAMA ÜCRETİNİ GİRİNİZ:");
             car.DailyPrice = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("EKLEMEK İSTEDİĞİNİZ ARACIN MODEL YILINI GİRİNİZ:");
