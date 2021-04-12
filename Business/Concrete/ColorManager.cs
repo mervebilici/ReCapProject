@@ -22,6 +22,15 @@ namespace Business.Concrete
 
         public IResult Add(Entities.Concrete.Color color)
         {
+            if (color.ColorName.Length < 2)
+            {
+                return new ErrorResult(Messages.Invalid);
+            }
+            else
+            {
+                _colorDal.Add(color);
+            }
+            
             _colorDal.Add(color);
             return new SuccessResult(Messages.Added);
         }
