@@ -14,22 +14,22 @@ namespace Business.DependencyResolvers.Autofac
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<BrandManager>().As<IBrandService>().SingleInstance();
-            builder.RegisterType<IBrandDal>().As<EfBrandDal>().SingleInstance();
+            builder.RegisterType<EfBrandDal>().As<IBrandDal>().SingleInstance();
 
             builder.RegisterType<CarManager>().As<ICarService>().SingleInstance();
-            builder.RegisterType<ICarDal>().As<EfCarDal>().SingleInstance();
+            builder.RegisterType<EfCarDal>().As<ICarDal>().SingleInstance();
 
             builder.RegisterType<ColorManager>().As<IColorService>().SingleInstance();
-            builder.RegisterType<IColorDal>().As<EfColorDal>().SingleInstance();
+            builder.RegisterType<EfColorDal>().As<IColorDal>().SingleInstance();
 
             builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
-            builder.RegisterType<ICustomerDal>().As<EfCustomersDal>().SingleInstance();
+            builder.RegisterType<EfCustomersDal>().As<ICustomerDal>().SingleInstance();
 
             builder.RegisterType<RentalManager>().As<IRentalService>().SingleInstance();
-            builder.RegisterType<IRentalDal>().As<EfRentalsDal>().SingleInstance();
+            builder.RegisterType<EfRentalsDal>().As<IRentalDal>().SingleInstance();
 
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
-            builder.RegisterType<IUserDal>().As<EfUsersDal>().SingleInstance();
+            builder.RegisterType<EfUsersDal>().As<IUserDal>().SingleInstance();
             
         }
     }
